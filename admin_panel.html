@@ -444,6 +444,33 @@
             margin-top: 8vw;
         }
 
+        .admin-edit-profile-btn {
+            display: flex;
+            align-items: center;
+            gap: 1vw;
+            margin: 4vw auto;
+            padding: 2vw 3vw;
+            background: rgba(59, 130, 246, 0.1);
+            border: 0.3vw solid #3B82F6;
+            border-radius: 2vw;
+            color: #3B82F6;
+            font-size: 3.5vw;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .admin-edit-profile-btn:hover {
+            background: #3B82F6;
+            color: white;
+            transform: translateY(-0.5vw);
+            box-shadow: 0 1.5vw 3vw rgba(59, 130, 246, 0.3);
+        }
+
+        .admin-edit-profile-btn i {
+            font-size: 3vw;
+        }
+
         .profile-edit-modal {
             display: none;
             position: fixed;
@@ -783,6 +810,16 @@
                 font-size: 8vw;
             }
 
+            .admin-edit-profile-btn {
+                padding: 3vw 4vw;
+                font-size: 4vw;
+                margin: 5vw auto;
+            }
+
+            .admin-edit-profile-btn i {
+                font-size: 3.5vw;
+            }
+
             .map-close-btn {
                 bottom: 30px;
                 right: 15px;
@@ -932,6 +969,10 @@
             </button>
             <h2 class="admin-main-title">Кабинет Менеджера</h2>
             <div class="admin-main-body">
+                <button class="admin-edit-profile-btn" onclick="openProfileEditModal()">
+                    <i class="fas fa-user-edit"></i>
+                    Редактировать профиль
+                </button>
                 <!-- Content will be added in next step -->
             </div>
         </div>
@@ -1172,8 +1213,41 @@
 
         // Avatar click handler in header
         function handleAvatarClick() {
-            openProfileEditModal();
+            const savedData = localStorage.getItem('adminProfile');
+            if (savedData) {
+                // Profile exists - open main admin modal
+                openAdminMainModal();
+            } else {
+                // No profile - open profile edit modal
+                openProfileEditModal();
+            }
         }
+
+        // Load profile data on page load
+        window.onload = function() {
+            const savedData = localStorage.getItem('adminProfile');
+            if (savedData) {
+                const profileData = JSON.parse(savedData);
+                
+                // Update header avatar
+                if (profileData.avatar) {
+                    const headerAvatar = document.querySelector('.avatar');
+                    if (headerAvatar) {
+                        headerAvatar.innerHTML = `<img src="${profileData.avatar}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+                    }
+                }
+                
+                // Update profile edit modal fields
+                document.getElementById('adminName').value = profileData.name || '';
+                document.getElementById('adminContact').value = profileData.contact || '';
+                document.getElementById('adminPosition').value = profileData.position || '';
+                
+                if (profileData.avatar) {
+                    const avatarPreview = document.getElementById('avatarPreview');
+                    avatarPreview.innerHTML = `<img src="${profileData.avatar}" alt="Avatar">`;
+                }
+            }
+        };
     </script>
 </body>
 </html>
