@@ -347,27 +347,30 @@
 
         .map-close-btn {
             position: absolute;
-            top: 4vw;
-            right: 4vw;
-            background: white;
+            bottom: 40px;
+            right: 20px;
+            background: rgba(30, 58, 138, 0.9);
             border: none;
-            border-radius: 2vw;
-            padding: 2vw 3vw;
-            font-size: 4vw;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 5vw;
             font-weight: 600;
-            color: #1E3A8A;
+            color: white;
             cursor: pointer;
-            z-index: 1001;
+            z-index: 2000;
             display: flex;
             align-items: center;
-            gap: 1vw;
-            box-shadow: 0 1.5vw 3vw rgba(0, 0, 0, 0.15);
+            justify-content: center;
+            gap: 0;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
         }
 
         .map-close-btn:hover {
-            background: #F3F4F6;
-            transform: scale(1.05);
+            background: rgba(30, 58, 138, 1);
+            transform: scale(1.1);
+            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
         }
 
         .map-container {
@@ -748,6 +751,14 @@
             .admin-main-title {
                 font-size: 8vw;
             }
+
+            .map-close-btn {
+                bottom: 30px;
+                right: 15px;
+                width: 50px;
+                height: 50px;
+                font-size: 6vw;
+            }
         }
 
         @media (max-width: 375px) {
@@ -865,7 +876,6 @@
         <div class="map-modal-content">
             <button class="map-close-btn" onclick="closeMapModal()">
                 <i class="fas fa-times"></i>
-                Закрыть
             </button>
             <div id="map" class="map-container"></div>
         </div>
