@@ -847,8 +847,18 @@
                 width: 60px !important;
                 height: 60px !important;
                 font-size: 6vw !important;
-                z-index: 99999 !important;
+                z-index: 999999 !important;
                 box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+                background: rgba(30, 58, 138, 0.9) !important;
+                border: none !important;
+                border-radius: 50% !important;
+                color: white !important;
+                cursor: pointer !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 0 !important;
+                transition: all 0.3s ease !important;
             }
 
             .btn-cancel {
@@ -982,10 +992,10 @@
 
     <!-- Map Modal Window -->
     <div id="mapModal" class="map-modal">
+        <button class="map-close-btn" onclick="closeMapModal()">
+            <i class="fas fa-times"></i>
+        </button>
         <div class="map-modal-content">
-            <button class="map-close-btn" onclick="closeMapModal()">
-                <i class="fas fa-times"></i>
-            </button>
             <div id="map" class="map-container"></div>
         </div>
     </div>
