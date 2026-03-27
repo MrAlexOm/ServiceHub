@@ -409,6 +409,16 @@
             width: 100%;
             height: 100%;
             padding: 4vw;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .admin-main-body {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            align-items: center;
         }
 
         .admin-close-btn {
@@ -837,6 +847,14 @@
             .btn-cancel i {
                 font-size: 3vw;
             }
+
+            .admin-main-content {
+                padding: 3vw;
+            }
+
+            .admin-main-body {
+                padding-bottom: 20vw;
+            }
         }
 
         @media (max-width: 375px) {
@@ -975,6 +993,32 @@
                 </button>
                 <!-- Content will be added in next step -->
             </div>
+            
+            <!-- Bottom Navigation for Admin Cabinet -->
+            <nav class="bottom-nav">
+                <div class="nav-items">
+                    <div class="nav-item" onclick="handleAdminNavClick('home')">
+                        <i class="fas fa-home nav-icon"></i>
+                        <span class="nav-label">Домой</span>
+                    </div>
+                    <div class="nav-item" onclick="handleAdminNavClick('calendar')">
+                        <i class="fas fa-calendar nav-icon"></i>
+                        <span class="nav-label">Календарь</span>
+                    </div>
+                    <div class="nav-item" onclick="handleAdminNavClick('inventory')">
+                        <i class="fas fa-box nav-icon"></i>
+                        <span class="nav-label">Инвентарь</span>
+                    </div>
+                    <div class="nav-item" onclick="handleAdminNavClick('docs')">
+                        <i class="fas fa-file-alt nav-icon"></i>
+                        <span class="nav-label">Документы</span>
+                    </div>
+                    <div class="nav-item" onclick="handleAdminNavClick('menu')">
+                        <i class="fas fa-bars nav-icon"></i>
+                        <span class="nav-label">Меню</span>
+                    </div>
+                </div>
+            </nav>
         </div>
     </div>
 
@@ -1248,6 +1292,27 @@
                 }
             }
         };
+
+        // Admin cabinet navigation handler
+        function handleAdminNavClick(action) {
+            switch(action) {
+                case 'home':
+                    closeAdminMainModal();
+                    break;
+                case 'calendar':
+                    alert('Календарь в личном кабинете');
+                    break;
+                case 'inventory':
+                    alert('Инвентарь в личном кабинете');
+                    break;
+                case 'docs':
+                    alert('Документы в личном кабинете');
+                    break;
+                case 'menu':
+                    alert('Меню в личном кабинете');
+                    break;
+            }
+        }
     </script>
 </body>
 </html>
