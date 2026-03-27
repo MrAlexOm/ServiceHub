@@ -587,6 +587,37 @@
             box-shadow: 0 1.5vw 3vw rgba(59, 130, 246, 0.3);
         }
 
+        .profile-close-section {
+            text-align: center;
+            margin-top: 3vw;
+        }
+
+        .btn-cancel {
+            background: transparent;
+            color: #EF4444;
+            border: 0.3vw solid #EF4444;
+            padding: 2vw 3vw;
+            font-size: 3vw;
+            font-weight: 600;
+            border-radius: 1.5vw;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 1vw;
+        }
+
+        .btn-cancel:hover {
+            background: #EF4444;
+            color: white;
+            transform: translateY(-0.3vw);
+            box-shadow: 0 1vw 2vw rgba(239, 68, 68, 0.2);
+        }
+
+        .btn-cancel i {
+            font-size: 2.5vw;
+        }
+
         @keyframes fadeIn {
             from { opacity: 0; }
             to { opacity: 1; }
@@ -758,6 +789,16 @@
                 width: 50px;
                 height: 50px;
                 font-size: 6vw;
+            }
+
+            .btn-cancel {
+                padding: 3vw 4vw;
+                font-size: 3.5vw;
+                margin-top: 4vw;
+            }
+
+            .btn-cancel i {
+                font-size: 3vw;
             }
         }
 
@@ -931,6 +972,13 @@
             <div class="profile-buttons">
                 <button class="btn-secondary" onclick="handleEditProfile()">Редактировать</button>
                 <button class="btn-primary" onclick="saveProfile()">Сохранить</button>
+            </div>
+            
+            <div class="profile-close-section">
+                <button class="btn-cancel" onclick="closeProfileEditModal()">
+                    <i class="fas fa-times"></i>
+                    Отмена
+                </button>
             </div>
         </div>
     </div>
