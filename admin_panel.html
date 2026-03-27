@@ -6,6 +6,7 @@
     <title>ServiceHub Manager</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://api-maps.yandex.ru/2.1/?lang=ru_RU&apikey=229e8f09-7ae4-460f-93ae-ede1f5dabd54" type="text/javascript"></script>
     <style>
         * {
             margin: 0;
@@ -307,8 +308,72 @@
         }
 
         .nav-label {
-            font-size: 3.5vw;
-            font-weight: 500;
+            font-size: 3.8vw;
+            font-weight: 600;
+        }
+
+        /* Map Modal Styles */
+        .map-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 1000;
+            animation: slideUp 0.3s ease-out;
+        }
+
+        .map-modal.active {
+            display: block;
+        }
+
+        .map-modal-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .map-close-btn {
+            position: absolute;
+            top: 4vw;
+            right: 4vw;
+            background: white;
+            border: none;
+            border-radius: 2vw;
+            padding: 2vw 3vw;
+            font-size: 4vw;
+            font-weight: 600;
+            color: #1E3A8A;
+            cursor: pointer;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 1vw;
+            box-shadow: 0 1.5vw 3vw rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .map-close-btn:hover {
+            background: #F3F4F6;
+            transform: scale(1.05);
+        }
+
+        .map-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        @keyframes slideUp {
+            from {
+                transform: translateY(100%);
+            }
+            to {
+                transform: translateY(0);
+            }
         }
 
         /* Responsive Media Queries */
@@ -391,6 +456,13 @@
 
             .tile-inventory {
                 padding: 3vw;
+            }
+
+            .map-close-btn {
+                font-size: 5vw;
+                padding: 3vw 4vw;
+                top: 3vw;
+                right: 3vw;
             }
         }
 
@@ -504,6 +576,17 @@
         </div>
     </nav>
 
+    <!-- Map Modal Window -->
+    <div id="mapModal" class="map-modal">
+        <div class="map-modal-content">
+            <button class="map-close-btn" onclick="closeMapModal()">
+                <i class="fas fa-times"></i>
+                Закрыть
+            </button>
+            <div id="map" class="map-container"></div>
+        </div>
+    </div>
+
     <script>
         // Navigation handlers
         function handleTileClick(tile) {
@@ -513,7 +596,7 @@
                     alert('Переход на страницу мастеров');
                     break;
                 case 'map':
-                    alert('Переход на карту');
+                    openMapModal();
                     break;
                 case 'calendar':
                     alert('Переход на календарь');
@@ -570,6 +653,32 @@
                     console.log('Открытие меню');
                     break;
             }
+        }
+
+        // Map Modal Functions
+        let map = null;
+
+        function openMapModal() {
+            const modal = document.getElementById('mapModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Initialize Yandex Map
+            if (!map) {
+                ymaps.ready(function() {
+                    map = new ymaps.Map('map', {
+                        center: [36.5, 32.0], // Antalya coordinates
+                        zoom: 12,
+                        controls: ['zoomControl', 'searchControl']
+                    });
+                });
+            }
+        }
+
+        function closeMapModal() {
+            const modal = document.getElementById('mapModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
         }
     </script>
 </body>
