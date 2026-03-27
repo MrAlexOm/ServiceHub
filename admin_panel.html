@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiceHub Manager</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(180deg, #87CEEB 0%, #FFFFFF 50%, #FFFFFF 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            padding-top: 30px;
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1E3A8A;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .notification-bell {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .notification-bell:hover {
+            transform: scale(1.1);
+        }
+
+        .notification-bell i {
+            font-size: 20px;
+            color: #6B7280;
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #EF4444;
+            color: white;
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            font-weight: 600;
+            border: 2px solid white;
+        }
+
+        .avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #E5E7EB 0%, #9CA3AF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .avatar i {
+            color: #9CA3AF;
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            padding: 20px;
+            padding-bottom: 120px;
+            width: 100%;
+        }
+
+        /* Grid Layout with Exact Positioning */
+        .tiles-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: auto auto auto auto;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .tile {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .tile:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .tile:active {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+        }
+
+        .tile img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+            display: block;
+        }
+
+        /* Exact Grid Positioning */
+        .tile-masters {
+            grid-column: 1;
+            grid-row: 1;
+            aspect-ratio: 1;
+        }
+
+        .tile-map {
+            grid-column: 1 / 3;
+            grid-row: 2;
+            aspect-ratio: 2/1;
+        }
+
+        .tile-orders {
+            grid-column: 1;
+            grid-row: 3;
+            aspect-ratio: 1.5/1;
+        }
+
+        .tile-calendar {
+            grid-column: 2;
+            grid-row: 3;
+            aspect-ratio: 1;
+        }
+
+        .small-tiles-container {
+            grid-column: 1 / 3;
+            grid-row: 4;
+            display: flex;
+            gap: 15px;
+            justify-content: space-between;
+        }
+
+        .small-tiles-container .tile {
+            flex: 1;
+            aspect-ratio: 1.2/1;
+        }
+
+        .tile-new-order {
+            grid-column: 1 / 3;
+            grid-row: 5;
+            aspect-ratio: 3/1;
+        }
+
+        /* Orders Button - Custom styling */
+        .orders-button {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .orders-button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.2);
+        }
+
+        .orders-stats {
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 15px;
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .stat-today {
+            color: #10B981;
+        }
+
+        .stat-tomorrow {
+            color: #F59E0B;
+        }
+
+        .stat-label {
+            font-size: 14px;
+            color: #6B7280;
+            font-weight: 500;
+        }
+
+        .orders-text {
+            text-align: center;
+            color: #9CA3AF;
+            font-size: 14px;
+            font-weight: 400;
+            line-height: 1.3;
+        }
+
+        /* Bottom Navigation */
+        .bottom-nav {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1);
+            padding: 15px 0;
+            z-index: 1000;
+        }
+
+        .nav-items {
+            display: flex;
+            justify-content: space-around;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .nav-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 5px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            padding: 5px;
+            border-radius: 8px;
+        }
+
+        .nav-item:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        .nav-item.active {
+            color: #3B82F6;
+        }
+
+        .nav-icon {
+            font-size: 20px;
+        }
+
+        .nav-label {
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        /* Responsive */
+        @media (max-width: 480px) {
+            .header {
+                padding: 15px;
+                padding-top: 25px;
+            }
+
+            .header-title {
+                font-size: 20px;
+            }
+
+            .tiles-grid {
+                gap: 12px;
+                padding: 0 10px;
+            }
+
+            .main-content {
+                padding: 15px 10px;
+                padding-bottom: 120px;
+            }
+
+            .stat-number {
+                font-size: 20px;
+            }
+
+            .notification-bell i {
+                font-size: 18px;
+            }
+
+            .notification-badge {
+                width: 16px;
+                height: 16px;
+                font-size: 9px;
+                top: -6px;
+                right: -6px;
+            }
+        }
+
+        /* Mobile scaling */
+        @media (max-width: 375px) {
+            .tiles-grid {
+                gap: 10px;
+            }
+
+            .header-title {
+                font-size: 18px;
+            }
+
+            .stat-number {
+                font-size: 18px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-title">ServiceHub</div>
+        <div class="header-right">
+            <div class="notification-bell" onclick="handleNotifications()">
+                <i class="fas fa-bell"></i>
+                <div class="notification-badge">3</div>
+            </div>
+            <div class="avatar">
+                <i class="fas fa-user"></i>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- Tiles Grid -->
+        <div class="tiles-grid">
+            <!-- Row 1: Masters (grid-column: 1, grid-row: 1) -->
+            <div class="tile tile-masters" onclick="handleTileClick('masters')">
+                <img src="masters_btn.png" alt="Мастера">
+            </div>
+            
+            <!-- Row 2: Map (grid-column: 1/3, grid-row: 2) -->
+            <div class="tile tile-map" onclick="handleTileClick('map')">
+                <img src="map_btn.png" alt="Карта">
+            </div>
+            
+            <!-- Row 3: Orders (grid-column: 1, grid-row: 3) + Calendar (grid-column: 2, grid-row: 3) -->
+            <div class="orders-button" onclick="handleOrdersClick()">
+                <div class="orders-stats">
+                    <div class="stat-item">
+                        <div class="stat-number stat-today">12</div>
+                        <div class="stat-label">Сегодня</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number stat-tomorrow">5</div>
+                        <div class="stat-label">Завтра</div>
+                    </div>
+                </div>
+                <div class="orders-text">
+                    Заявки (Количество заказов)
+                </div>
+            </div>
+            <div class="tile tile-calendar" onclick="handleTileClick('calendar')">
+                <img src="calendar_btn.png" alt="Календарь">
+            </div>
+            
+            <!-- Row 4: Small tiles container (grid-column: 1/3, grid-row: 4) -->
+            <div class="small-tiles-container">
+                <div class="tile" onclick="handleTileClick('finance')">
+                    <img src="finance_btn.png" alt="Финансы">
+                </div>
+                <div class="tile" onclick="handleTileClick('docs')">
+                    <img src="docs_btn.png" alt="Документация">
+                </div>
+                <div class="tile" onclick="handleTileClick('inventory')">
+                    <img src="inventory_btn.png" alt="Инвентарь">
+                </div>
+            </div>
+            
+            <!-- Row 5: New Order (grid-column: 1/3, grid-row: 5) -->
+            <div class="tile tile-new-order" onclick="handleTileClick('new_order')">
+                <img src="new_order_btn.png" alt="Новый заказ">
+            </div>
+        </div>
+    </main>
+
+    <!-- Bottom Navigation -->
+    <nav class="bottom-nav">
+        <div class="nav-items">
+            <div class="nav-item active" onclick="handleNavClick('home')">
+                <i class="fas fa-home nav-icon"></i>
+                <span class="nav-label">Домой</span>
+            </div>
+            <div class="nav-item" onclick="handleNavClick('calendar')">
+                <i class="fas fa-calendar nav-icon"></i>
+                <span class="nav-label">Календарь</span>
+            </div>
+            <div class="nav-item" onclick="handleNavClick('inventory')">
+                <i class="fas fa-box nav-icon"></i>
+                <span class="nav-label">Инвентарь</span>
+            </div>
+            <div class="nav-item" onclick="handleNavClick('docs')">
+                <i class="fas fa-file-alt nav-icon"></i>
+                <span class="nav-label">Документы</span>
+            </div>
+            <div class="nav-item" onclick="handleNavClick('menu')">
+                <i class="fas fa-bars nav-icon"></i>
+                <span class="nav-label">Меню</span>
+            </div>
+        </div>
+    </nav>
+
+    <script>
+        // Navigation handlers
+        function handleTileClick(tile) {
+            console.log('Tile clicked:', tile);
+            switch(tile) {
+                case 'masters':
+                    alert('Переход на страницу мастеров');
+                    break;
+                case 'map':
+                    alert('Переход на карту');
+                    break;
+                case 'calendar':
+                    alert('Переход на календарь');
+                    break;
+                case 'finance':
+                    alert('Переход на финансы');
+                    break;
+                case 'docs':
+                    alert('Переход на документы');
+                    break;
+                case 'inventory':
+                    alert('Переход на инвентарь');
+                    break;
+                case 'new_order':
+                    alert('Создание нового заказа с ИИ-помощником');
+                    break;
+            }
+        }
+
+        function handleOrdersClick() {
+            console.log('Orders button clicked');
+            alert('Переход на страницу заявок');
+        }
+
+        function handleNotifications() {
+            console.log('Notifications clicked');
+            alert('Открытие уведомлений');
+        }
+
+        function handleNavClick(item) {
+            console.log('Nav item clicked:', item);
+            
+            // Update active state
+            document.querySelectorAll('.nav-item').forEach(navItem => {
+                navItem.classList.remove('active');
+            });
+            event.currentTarget.classList.add('active');
+            
+            // Add navigation logic here
+            switch(item) {
+                case 'home':
+                    console.log('Переход на главную');
+                    break;
+                case 'calendar':
+                    console.log('Переход на календарь');
+                    break;
+                case 'inventory':
+                    console.log('Переход на инвентарь');
+                    break;
+                case 'docs':
+                    console.log('Переход на документы');
+                    break;
+                case 'menu':
+                    console.log('Открытие меню');
+                    break;
+            }
+        }
+    </script>
+</body>
+</html>

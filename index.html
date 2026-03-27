@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ServiceHub</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Role Selection Screen -->
+    <div id="roleSelectionScreen" class="screen active">
+        <div class="container">
+            <div class="header">
+                <h1 class="servicehub-title">ServiceHub</h1>
+            </div>
+            
+            <div class="content">
+                <h2 class="registration-title">Регистрация в сервисе мастеров</h2>
+                
+                <div class="role-cards">
+                    <!-- Master Card -->
+                    <img src="master_btn.png" alt="Я МАСТЕР" class="role-btn master-btn" onclick="navigateToMaster()">
+                    
+                    <!-- Admin Card -->
+                    <img src="admin_btn.png" alt="Я АДМИН" class="role-btn admin-btn" onclick="navigateToAdmin()">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Auth Screen -->
+    <div id="adminAuthScreen" class="screen">
+        <div class="container">
+            <div class="auth-header">
+                <button class="back-btn" onclick="backToRoleSelection()">
+                    <i class="fas fa-arrow-left"></i> Назад
+                </button>
+                <h1 class="auth-title">Авторизация Админа</h1>
+            </div>
+            
+            <div class="auth-content">
+                <form id="adminAuthForm" onsubmit="handleAdminAuth(event)">
+                    <div class="form-group">
+                        <label for="email">Email</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password">Пароль</label>
+                        <input type="password" id="password" name="password" required>
+                    </div>
+                    
+                    <div id="errorMessage" class="error-message" style="display: none;">
+                        Ошибка email. Обратитесь к супер-админу.
+                    </div>
+                    
+                    <button type="submit" class="auth-btn" id="loginBtn">
+                        <span class="btn-text">Вход</span>
+                        <div class="spinner" style="display: none;"></div>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Master Home Screen -->
+    <div id="masterHomeScreen" class="screen">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>Панель Мастера</h1>
+            </div>
+            <div class="dashboard-content">
+                <i class="fas fa-tools dashboard-icon"></i>
+                <p>Экран для Мастера<br>(в разработке)</p>
+                <button class="back-btn" onclick="backToRoleSelection()">
+                    <i class="fas fa-arrow-left"></i> Назад
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Dashboard Screen -->
+    <div id="adminDashboardScreen" class="screen">
+        <div class="container">
+            <div class="dashboard-header">
+                <h1>Панель Админа</h1>
+            </div>
+            <div class="dashboard-content">
+                <i class="fas fa-tachometer-alt dashboard-icon"></i>
+                <p>Панель управления<br>(в разработке)</p>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i> Выйти
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
