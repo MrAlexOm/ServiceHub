@@ -116,6 +116,7 @@
             margin: 0 auto;
         }
 
+        /* Tile styles - No hover for main tiles */
         .tile {
             background: white;
             border-radius: 2vw;
@@ -128,12 +129,17 @@
             justify-content: center;
         }
 
-        .tile:hover {
+        /* Hover only for small tiles (finance, docs, inventory) */
+        .tile-finance:hover,
+        .tile-docs:hover,
+        .tile-inventory:hover {
             transform: translateY(-1vw);
             box-shadow: 0 2vw 4vw rgba(0, 0, 0, 0.2);
         }
 
-        .tile:active {
+        .tile-finance:active,
+        .tile-docs:active,
+        .tile-inventory:active {
             transform: translateY(-0.5vw);
             box-shadow: 0 1vw 2.5vw rgba(0, 0, 0, 0.15);
         }
@@ -145,17 +151,17 @@
             display: block;
         }
 
-        /* 12-Cell Grid Positioning */
+        /* 12-Cell Grid Positioning - No hover for main tiles */
         .tile-masters {
             grid-column: 1;
             grid-row: 1 / 2.2;
-            aspect-ratio: 1/1.2;
+            aspect-ratio: 1;
         }
 
         .tile-map {
             grid-column: 2 / 4;
             grid-row: 1 / 2.2;
-            aspect-ratio: 2/1.2;
+            aspect-ratio: 2/1;
         }
 
         .tile-orders {
@@ -167,31 +173,31 @@
         .tile-calendar {
             grid-column: 3;
             grid-row: 2.2 / 3.2;
-            aspect-ratio: 1/1;
+            aspect-ratio: 1;
         }
 
         .tile-finance {
             grid-column: 1;
             grid-row: 3.2 / 4.2;
-            aspect-ratio: 1.2/1;
+            aspect-ratio: 1;
         }
 
         .tile-docs {
             grid-column: 2;
             grid-row: 3.2 / 4.2;
-            aspect-ratio: 1.2/1;
+            aspect-ratio: 1;
         }
 
         .tile-inventory {
             grid-column: 3;
             grid-row: 3.2 / 4.2;
-            aspect-ratio: 1.2/1;
+            aspect-ratio: 1;
         }
 
         .tile-new-order {
             grid-column: 1 / 4;
             grid-row: 4.2 / 5;
-            aspect-ratio: 3/0.8;
+            aspect-ratio: 3/1;
         }
 
         /* Orders Button - All vw units */
