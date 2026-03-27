@@ -384,6 +384,222 @@
             }
         }
 
+        /* Admin Profile Modals Styles */
+        .admin-main-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(180deg, #87CEEB 0%, #FFFFFF 50%, #FFFFFF 100%);
+            z-index: 1000;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .admin-main-modal.active {
+            display: block;
+        }
+
+        .admin-main-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            padding: 4vw;
+        }
+
+        .admin-close-btn {
+            position: absolute;
+            top: 4vw;
+            right: 4vw;
+            background: white;
+            border: none;
+            border-radius: 2vw;
+            padding: 2vw 3vw;
+            font-size: 4vw;
+            font-weight: 600;
+            color: #1E3A8A;
+            cursor: pointer;
+            z-index: 1001;
+            display: flex;
+            align-items: center;
+            gap: 1vw;
+            box-shadow: 0 1.5vw 3vw rgba(0, 0, 0, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .admin-close-btn:hover {
+            background: #F3F4F6;
+            transform: scale(1.05);
+        }
+
+        .admin-main-title {
+            font-size: 7vw;
+            font-weight: 700;
+            color: #1E3A8A;
+            text-align: center;
+            margin-top: 8vw;
+        }
+
+        .profile-edit-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 90%;
+            max-width: 500px;
+            background: white;
+            border-radius: 3vw;
+            box-shadow: 0 3vw 6vw rgba(0, 0, 0, 0.2);
+            z-index: 1100;
+            animation: scaleIn 0.3s ease-out;
+        }
+
+        .profile-edit-modal.active {
+            display: block;
+        }
+
+        .profile-edit-content {
+            padding: 4vw;
+        }
+
+        .profile-edit-title {
+            font-size: 5vw;
+            font-weight: 700;
+            color: #1E3A8A;
+            text-align: center;
+            margin-bottom: 4vw;
+        }
+
+        .profile-avatar-section {
+            text-align: center;
+            margin-bottom: 4vw;
+        }
+
+        .avatar-upload-label {
+            cursor: pointer;
+            display: inline-block;
+        }
+
+        .profile-avatar-preview {
+            width: 20vw;
+            height: 20vw;
+            max-width: 120px;
+            max-height: 120px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #E5E7EB 0%, #9CA3AF 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 2vw;
+            border: 0.5vw solid white;
+            box-shadow: 0 1.5vw 3vw rgba(0, 0, 0, 0.15);
+            overflow: hidden;
+        }
+
+        .profile-avatar-preview i {
+            font-size: 6vw;
+            color: #9CA3AF;
+        }
+
+        .profile-avatar-preview img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar-upload-text {
+            font-size: 2.5vw;
+            color: #6B7280;
+            display: block;
+        }
+
+        .profile-form {
+            margin-bottom: 4vw;
+        }
+
+        .form-group {
+            margin-bottom: 3vw;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 3vw;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 1vw;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 2.5vw;
+            font-size: 3vw;
+            border: 0.3vw solid #E5E7EB;
+            border-radius: 1.5vw;
+            background: #F9FAFB;
+            transition: all 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #3B82F6;
+            background: white;
+            box-shadow: 0 0 0 0.3vw rgba(59, 130, 246, 0.1);
+        }
+
+        .profile-buttons {
+            display: flex;
+            gap: 2vw;
+            justify-content: center;
+        }
+
+        .btn-secondary, .btn-primary {
+            padding: 2.5vw 4vw;
+            font-size: 3.5vw;
+            font-weight: 600;
+            border: none;
+            border-radius: 1.5vw;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-secondary {
+            background: #F3F4F6;
+            color: #6B7280;
+        }
+
+        .btn-secondary:hover {
+            background: #E5E7EB;
+        }
+
+        .btn-primary {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #2563EB;
+            transform: translateY(-0.5vw);
+            box-shadow: 0 1.5vw 3vw rgba(59, 130, 246, 0.3);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: translate(-50%, -50%) scale(0.8);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, -50%) scale(1);
+                opacity: 1;
+            }
+        }
+
         /* Responsive Media Queries */
         @media (max-width: 480px) {
             .header {
@@ -484,6 +700,54 @@
                 top: 3vw;
                 right: 3vw;
             }
+
+            .profile-edit-modal {
+                width: 95%;
+            }
+
+            .profile-edit-content {
+                padding: 5vw;
+            }
+
+            .profile-edit-title {
+                font-size: 6vw;
+            }
+
+            .profile-avatar-preview {
+                width: 25vw;
+                height: 25vw;
+            }
+
+            .profile-avatar-preview i {
+                font-size: 8vw;
+            }
+
+            .avatar-upload-text {
+                font-size: 3vw;
+            }
+
+            .form-group label {
+                font-size: 3.5vw;
+            }
+
+            .form-input {
+                padding: 3vw;
+                font-size: 3.5vw;
+            }
+
+            .btn-secondary, .btn-primary {
+                padding: 3vw 5vw;
+                font-size: 4vw;
+            }
+
+            .admin-close-btn {
+                font-size: 5vw;
+                padding: 3vw 4vw;
+            }
+
+            .admin-main-title {
+                font-size: 8vw;
+            }
         }
 
         @media (max-width: 375px) {
@@ -514,7 +778,7 @@
                 <i class="fas fa-bell"></i>
                 <div class="notification-badge">3</div>
             </div>
-            <div class="avatar">
+            <div class="avatar" onclick="handleAvatarClick()">
                 <i class="fas fa-user"></i>
             </div>
         </div>
@@ -604,6 +868,60 @@
                 Закрыть
             </button>
             <div id="map" class="map-container"></div>
+        </div>
+    </div>
+
+    <!-- Admin Profile Modals -->
+    <!-- Main Admin Cabinet (Fullscreen) -->
+    <div id="adminMainModal" class="admin-main-modal">
+        <div class="admin-main-content">
+            <button class="admin-close-btn" onclick="closeAdminMainModal()">
+                <i class="fas fa-times"></i>
+                Закрыть
+            </button>
+            <h2 class="admin-main-title">Кабинет Менеджера</h2>
+            <div class="admin-main-body">
+                <!-- Content will be added in next step -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Profile Edit Modal (Center) -->
+    <div id="profileEditModal" class="profile-edit-modal">
+        <div class="profile-edit-content">
+            <h2 class="profile-edit-title">Заполнить профиль</h2>
+            
+            <div class="profile-avatar-section">
+                <label for="avatarInput" class="avatar-upload-label">
+                    <div class="profile-avatar-preview" id="avatarPreview">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <span class="avatar-upload-text">Нажмите для загрузки фото</span>
+                </label>
+                <input type="file" id="avatarInput" accept="image/*" style="display: none;">
+            </div>
+
+            <div class="profile-form">
+                <div class="form-group">
+                    <label for="adminName">Имя</label>
+                    <input type="text" id="adminName" placeholder="Введите имя" class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminContact">Контакт</label>
+                    <input type="text" id="adminContact" placeholder="Телефон или Email" class="form-input">
+                </div>
+                
+                <div class="form-group">
+                    <label for="adminPosition">Должность</label>
+                    <input type="text" id="adminPosition" placeholder="Введите должность" class="form-input">
+                </div>
+            </div>
+
+            <div class="profile-buttons">
+                <button class="btn-secondary" onclick="handleEditProfile()">Редактировать</button>
+                <button class="btn-primary" onclick="saveProfile()">Сохранить</button>
+            </div>
         </div>
     </div>
 
@@ -699,6 +1017,104 @@
             const modal = document.getElementById('mapModal');
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
+        }
+
+        // Admin Profile Functions
+        function openProfileEditModal() {
+            const modal = document.getElementById('profileEditModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Load saved profile data
+            loadProfileData();
+        }
+
+        function closeProfileEditModal() {
+            const modal = document.getElementById('profileEditModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function openAdminMainModal() {
+            const modal = document.getElementById('adminMainModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeAdminMainModal() {
+            const modal = document.getElementById('adminMainModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function handleEditProfile() {
+            console.log('Edit profile clicked');
+            // Enable form editing
+            const inputs = document.querySelectorAll('.form-input');
+            inputs.forEach(input => {
+                input.removeAttribute('readonly');
+                input.focus();
+            });
+        }
+
+        function saveProfile() {
+            // Get form data
+            const profileData = {
+                name: document.getElementById('adminName').value,
+                contact: document.getElementById('adminContact').value,
+                position: document.getElementById('adminPosition').value,
+                avatar: document.getElementById('avatarPreview').querySelector('img')?.src || null
+            };
+            
+            // Save to localStorage
+            localStorage.setItem('adminProfile', JSON.stringify(profileData));
+            
+            // Update header avatar if image exists
+            if (profileData.avatar) {
+                const headerAvatar = document.querySelector('.avatar');
+                if (headerAvatar) {
+                    headerAvatar.innerHTML = `<img src="${profileData.avatar}" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; border-radius: 50%;">`;
+                }
+            }
+            
+            // Close profile edit modal
+            closeProfileEditModal();
+            
+            // Open main admin modal
+            openAdminMainModal();
+        }
+
+        function loadProfileData() {
+            const savedData = localStorage.getItem('adminProfile');
+            if (savedData) {
+                const profileData = JSON.parse(savedData);
+                document.getElementById('adminName').value = profileData.name || '';
+                document.getElementById('adminContact').value = profileData.contact || '';
+                document.getElementById('adminPosition').value = profileData.position || '';
+                
+                if (profileData.avatar) {
+                    const avatarPreview = document.getElementById('avatarPreview');
+                    avatarPreview.innerHTML = `<img src="${profileData.avatar}" alt="Avatar">`;
+                }
+            }
+        }
+
+        // Avatar upload handler
+        document.getElementById('avatarInput').addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file && file.type.startsWith('image/')) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const avatarPreview = document.getElementById('avatarPreview');
+                    avatarPreview.innerHTML = `<img src="${e.target.result}" alt="Avatar">`;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        // Avatar click handler in header
+        function handleAvatarClick() {
+            openProfileEditModal();
         }
     </script>
 </body>
