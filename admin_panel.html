@@ -1650,20 +1650,26 @@
 
         // Universal API Key getter function
         function getApiKey() {
-            // Priority 1: User key from localStorage
+            // Priority 1: Environment variable (Vercel)
+            if (typeof process !== 'undefined' && process.env && process.env.GEMINI_API_KEY && process.env.GEMINI_API_KEY.length >= 10) {
+                console.log('Using GEMINI_API_KEY from environment');
+                return process.env.GEMINI_API_KEY;
+            }
+            
+            // Priority 2: User key from localStorage
             const userKey = localStorage.getItem('user_gemini_key');
             if (userKey && userKey.length >= 10) {
                 console.log('Using user key from localStorage');
                 return userKey;
             }
             
-            // Priority 2: Global API_KEY from config.js
+            // Priority 3: Global API_KEY from config.js (environment fallback)
             if (typeof API_KEY !== 'undefined' && API_KEY && API_KEY !== 'PLACEHOLDER_API_KEY' && API_KEY.length >= 10) {
                 console.log('Using global API_KEY from config.js');
                 return API_KEY;
             }
             
-            // Priority 3: Fallback to empty
+            // Priority 4: Fallback to empty
             console.log('No valid API key found');
             return null;
         }
