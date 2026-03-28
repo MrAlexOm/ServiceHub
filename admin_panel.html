@@ -664,19 +664,25 @@
             display: flex;
             gap: 2vw;
             justify-content: center;
+            padding: 0 10px;
+            flex-wrap: wrap;
         }
 
         .api-key-btn {
             display: flex;
             align-items: center;
-            gap: 1vw;
-            padding: 2vw 3vw;
+            gap: 8px;
+            padding: 12px 20px;
             border: none;
-            border-radius: 1.5vw;
-            font-size: 3vw;
+            border-radius: 8px;
+            font-size: 14px;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.3s ease;
+            max-width: 90%;
+            margin: 5px auto;
+            min-width: 120px;
+            flex: 1;
         }
 
         .api-key-btn.save-btn {
@@ -686,7 +692,7 @@
 
         .api-key-btn.save-btn:hover {
             background: #2563EB;
-            transform: translateY(-0.5vw);
+            transform: translateY(-2px);
         }
 
         .api-key-btn.delete-btn {
@@ -696,7 +702,7 @@
 
         .api-key-btn.delete-btn:hover {
             background: #DC2626;
-            transform: translateY(-0.5vw);
+            transform: translateY(-2px);
         }
 
         .api-key-status {
@@ -1281,6 +1287,27 @@
 
             .admin-main-body {
                 padding-bottom: 20vw;
+            }
+        }
+
+        @media (max-width: 1366px) {
+            .api-key-buttons {
+                flex-direction: column;
+                align-items: center;
+                padding: 0 20px;
+            }
+            
+            .api-key-btn {
+                width: 100%;
+                max-width: 300px;
+                margin: 5px 0;
+                font-size: 13px;
+                padding: 10px 16px;
+            }
+            
+            .api-key-section {
+                padding: 20px;
+                margin-top: 20px;
             }
         }
 
