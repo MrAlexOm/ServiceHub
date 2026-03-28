@@ -1440,6 +1440,7 @@
         </div>
     </div>
 
+    <script src="config.js"></script>
     <script>
         // Navigation handlers
         function handleTileClick(tile) {
@@ -1927,62 +1928,116 @@
             // Show AI processing
             displayMessage('ai', 'Обрабатываю заказ...');
             
-            // Simulate AI processing
-            setTimeout(() => {
-                const orderData = processOrderWithAI(orderText);
+            // Process with AI
+            processOrderWithAI(orderText).then(orderData => {
                 displayOrderCard(orderData);
+                
+                // Save to calendar
+                saveToCalendar(orderData);
+                
+                // Save to finances
+                saveToFinances(orderData);
                 
                 // Update counters
                 updateOrderCounters(orderData);
                 
                 // Show notification
                 showNotification(orderData);
-            }, 1500);
+            }).catch(error => {
+                console.error('Order processing error:', error);
+                displayMessage('ai', 'Ошибка обработки заказа. Попробуйте еще раз.');
+            });
         }
 
         function processOrderWithAI(orderText) {
-            // Simulate AI processing
+            // Check if API key is available
+            if (typeof API_KEY === 'undefined' || !API_KEY) {
+                // Fallback to simulation if no API key
+                return simulateOrderProcessing(orderText);
+            }
+            
+            // Use Gemini API
+            return callGeminiAPI(orderText);
+        }
+
+        function simulateOrderProcessing(orderText) {
             const masters = getMasters();
             const selectedMasters = [];
             
-            // Extract masters mentioned with @
             masters.forEach(master => {
                 if (orderText.includes(master.name)) {
                     selectedMasters.push(master.name);
                 }
             });
             
-            // Simulate structured order data
             return {
-                client: {
-                    name: 'Анна Петрова',
-                    phone: '+7 900 123-45-67',
-                    whatsapp: '+7 900 123-45-67'
-                },
-                address: {
-                    city: 'Москва',
-                    district: 'Центральный',
-                    street: 'Тверская улица',
-                    house: '15',
-                    apartment: '42',
-                    floor: '4'
-                },
-                details: {
-                    type: 'Генеральная уборка',
-                    rooms: '3 комнаты',
-                    services: 'Химчистка мебели, мытье окон',
-                    equipment: 'Пылесос, моющие средства'
-                },
-                masters: selectedMasters.length > 0 ? selectedMasters : ['Иван Петров'],
-                finance: {
-                    total: 15000,
-                    extra: 2000,
-                    adminShare: 4500,
-                    mastersSalary: 10500
-                },
                 date: new Date().toLocaleDateString('ru-RU'),
-                isToday: true
+                time: new Date().toLocaleTimeString('ru-RU'),
+                client_name: 'Анна Петрова',
+                phone: '+7 900 123-45-67',
+                address: {
+                    district: 'Муратпаша',
+                    street: 'Лара каддеси',
+                    building: '15',
+                    apartment: '42'
+                },
+                service_type: 'Генеральная уборка',
+                rooms: '3 комнаты',
+                extra_services: 'Химчистка мебели, мытье окон',
+                equipment: 'Пылесос, моющие средства',
+                staff: selectedMasters.length > 0 ? selectedMasters : ['Иван Петров'],
+                total_price: 15000,
+                admin_profit: 4500,
+                staff_salary: 10500
             };
+        }
+
+        async function callGeminiAPI(orderText) {
+            const systemInstruction = "Ты — диспетчер клининга 'CleanTeam' в Анталье. Твоя цель — превратить сообщение админа в JSON. Если данных не хватает, спроси уточнение. Если данные есть, верни JSON с полями: date, time, client_name, phone, address (district, street, building, apartment), service_type, rooms, extra_services, equipment, staff (array), total_price, admin_profit (30%), staff_salary. Приоритетный регион — Турция (Анталья, Хурма, Лара, Коньялты).";
+            
+            try {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${API_KEY}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        contents: [{
+                            parts: [{
+                                text: `${systemInstruction}\n\nЗаказ: ${orderText}`
+                            }]
+                        }],
+                        generationConfig: {
+                            temperature: 0.3,
+                            maxOutputTokens: 1000
+                        }
+                    })
+                });
+                
+                const data = await response.json();
+                
+                if (data.candidates && data.candidates[0]) {
+                    const text = data.candidates[0].content.parts[0].text;
+                    
+                    // Try to parse JSON from response
+                    try {
+                        const jsonMatch = text.match(/\{[\s\S]*\}/);
+                        if (jsonMatch) {
+                            return JSON.parse(jsonMatch[0]);
+                        }
+                    } catch (e) {
+                        console.error('Failed to parse AI response:', e);
+                    }
+                }
+                
+                // Fallback to simulation if API fails
+                return simulateOrderProcessing(orderText);
+                
+            } catch (error) {
+                console.error('Gemini API error:', error);
+                // Fallback to simulation
+                return simulateOrderProcessing(orderText);
+            }
         }
 
         function displayOrderCard(orderData) {
@@ -1999,35 +2054,27 @@
                             <div class="order-card-title">👤 Клиент</div>
                             <div class="order-card-item">
                                 <strong>Имя:</strong>
-                                <span class="order-card-value">${orderData.client.name}</span>
+                                <span class="order-card-value">${orderData.client_name}</span>
                             </div>
                             <div class="order-card-item">
                                 <strong>Телефон:</strong>
-                                <span class="order-card-value">${orderData.client.phone}</span>
-                            </div>
-                            <div class="order-card-item">
-                                <strong>WhatsApp:</strong>
-                                <span class="order-card-value">${orderData.client.whatsapp}</span>
+                                <span class="order-card-value">${orderData.phone}</span>
                             </div>
                         </div>
                         
                         <div class="order-card-section">
                             <div class="order-card-title">📍 Адрес</div>
                             <div class="order-card-item">
-                                <strong>Город:</strong>
-                                <span class="order-card-value">${orderData.address.city}</span>
-                            </div>
-                            <div class="order-card-item">
                                 <strong>Район:</strong>
                                 <span class="order-card-value">${orderData.address.district}</span>
                             </div>
                             <div class="order-card-item">
-                                <strong>Адрес:</strong>
-                                <span class="order-card-value">${orderData.address.street}, ${orderData.address.house}</span>
+                                <strong>Улица:</strong>
+                                <span class="order-card-value">${orderData.address.street}, ${orderData.address.building}</span>
                             </div>
                             <div class="order-card-item">
-                                <strong>Кв/Этаж:</strong>
-                                <span class="order-card-value">${orderData.address.apartment}/${orderData.address.floor}</span>
+                                <strong>Кв:</strong>
+                                <span class="order-card-value">${orderData.address.apartment}</span>
                             </div>
                         </div>
                         
@@ -2035,15 +2082,15 @@
                             <div class="order-card-title">🔧 Детали</div>
                             <div class="order-card-item">
                                 <strong>Тип:</strong>
-                                <span class="order-card-value">${orderData.details.type}</span>
+                                <span class="order-card-value">${orderData.service_type}</span>
                             </div>
                             <div class="order-card-item">
                                 <strong>Помещения:</strong>
-                                <span class="order-card-value">${orderData.details.rooms}</span>
+                                <span class="order-card-value">${orderData.rooms}</span>
                             </div>
                             <div class="order-card-item">
                                 <strong>Услуги:</strong>
-                                <span class="order-card-value">${orderData.details.services}</span>
+                                <span class="order-card-value">${orderData.extra_services}</span>
                             </div>
                         </div>
                         
@@ -2051,7 +2098,7 @@
                             <div class="order-card-title">👥 Мастера</div>
                             <div class="order-card-item">
                                 <strong>Исполнители:</strong>
-                                <span class="order-card-value">${orderData.masters.join(', ')}</span>
+                                <span class="order-card-value">${orderData.staff.join(', ')}</span>
                             </div>
                         </div>
                         
@@ -2059,19 +2106,15 @@
                             <div class="order-card-title">💰 Финансы</div>
                             <div class="order-card-item">
                                 <strong>Общая сумма:</strong>
-                                <span class="order-card-value">${orderData.finance.total} ₽</span>
-                            </div>
-                            <div class="order-card-item">
-                                <strong>Доплата:</strong>
-                                <span class="order-card-value">${orderData.finance.extra} ₽</span>
+                                <span class="order-card-value">${orderData.total_price} ₽</span>
                             </div>
                             <div class="order-card-item">
                                 <strong>Доля админа (30%):</strong>
-                                <span class="order-card-value">${orderData.finance.adminShare} ₽</span>
+                                <span class="order-card-value">${orderData.admin_profit} ₽</span>
                             </div>
                             <div class="order-card-item">
                                 <strong>ЗП мастеров:</strong>
-                                <span class="order-card-value">${orderData.finance.mastersSalary} ₽</span>
+                                <span class="order-card-value">${orderData.staff_salary} ₽</span>
                             </div>
                         </div>
                     </div>
@@ -2080,6 +2123,44 @@
             
             chatMessages.appendChild(aiMessage);
             chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function saveToCalendar(orderData) {
+            const calendar = localStorage.getItem('calendar');
+            const events = calendar ? JSON.parse(calendar) : [];
+            
+            const event = {
+                id: Date.now(),
+                date: orderData.date,
+                time: orderData.time,
+                title: `Заказ: ${orderData.client_name}`,
+                address: `${orderData.address.district}, ${orderData.address.street}`,
+                staff: orderData.staff,
+                total_price: orderData.total_price,
+                status: 'active'
+            };
+            
+            events.push(event);
+            localStorage.setItem('calendar', JSON.stringify(events));
+        }
+
+        function saveToFinances(orderData) {
+            const finances = localStorage.getItem('finances');
+            const records = finances ? JSON.parse(finances) : [];
+            
+            const record = {
+                id: Date.now(),
+                date: orderData.date,
+                time: orderData.time,
+                client_name: orderData.client_name,
+                total_price: orderData.total_price,
+                admin_profit: orderData.admin_profit,
+                staff_salary: orderData.staff_salary,
+                status: 'Ожидание'
+            };
+            
+            records.push(record);
+            localStorage.setItem('finances', JSON.stringify(records));
         }
 
         function updateOrderCounters(orderData) {
