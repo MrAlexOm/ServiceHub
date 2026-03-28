@@ -1958,7 +1958,8 @@
         function processOrderWithAI(orderText) {
             // Check if API key is available
             if (typeof API_KEY === 'undefined' || !API_KEY) {
-                // Fallback to simulation if no API key
+                // API key not found - show warning and fallback
+                displayMessage('ai', '⚠️ API ключ не найден в config.js');
                 return simulateOrderProcessing(orderText);
             }
             
@@ -2020,6 +2021,10 @@
                     })
                 });
                 
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+                }
+                
                 const data = await response.json();
                 
                 if (data.candidates && data.candidates[0]) {
@@ -2033,14 +2038,31 @@
                         }
                     } catch (e) {
                         console.error('Failed to parse AI response:', e);
+                        throw new Error('Failed to parse AI response');
                     }
+                } else {
+                    throw new Error('No valid AI response received');
                 }
                 
-                // Fallback to simulation if API fails
-                return simulateOrderProcessing(orderText);
-                
             } catch (error) {
-                console.error('Gemini API error:', error);
+                console.error('Gemini API Error:', error);
+                
+                // Show specific error message in chat
+                let errorMessage = '❌ Ошибка: ';
+                if (error.message.includes('Failed to fetch')) {
+                    errorMessage += 'Проблема с подключением к API';
+                } else if (error.message.includes('HTTP 403')) {
+                    errorMessage += 'Неверный API ключ или доступ запрещен';
+                } else if (error.message.includes('HTTP 429')) {
+                    errorMessage += 'Слишком много запросов, попробуйте позже';
+                } else if (error.message.includes('Failed to parse')) {
+                    errorMessage += 'Не удалось разобрать ответ ИИ';
+                } else {
+                    errorMessage += error.message || 'Неизвестная ошибка';
+                }
+                
+                displayMessage('ai', errorMessage);
+                
                 // Fallback to simulation
                 return simulateOrderProcessing(orderText);
             }
