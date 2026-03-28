@@ -335,16 +335,17 @@
             height: 100%;
             background: rgba(0, 0, 0, 0.8);
             z-index: 1000;
+            flex-direction: column;
         }
 
         .map-modal.active {
-            display: block;
+            display: flex;
         }
 
         .map-container-wrapper {
+            flex: 1;
             position: relative;
             width: 100%;
-            height: 100%;
             display: flex;
             flex-direction: column;
         }
@@ -353,23 +354,36 @@
             flex: 1;
             position: relative;
             width: 100%;
-            height: calc(100% - 60px);
         }
 
         .map-container {
             width: 100%;
-            height: 100%;
+            height: calc(100% - 70px) !important;
             border-radius: 1vw;
             overflow: hidden;
+            flex-grow: 1;
+        }
+
+        .map-footer-container {
+            height: 70px;
+            background: white;
+            position: relative;
+            z-index: 9999;
+            flex-shrink: 0;
         }
 
         /* Map Footer Navigation */
         .map-modal .bottom-nav {
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            z-index: 3000;
+            position: relative;
+            bottom: auto;
+            left: auto;
+            right: auto;
+            z-index: 9999;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            box-shadow: 0 -0.5vw 2.5vw rgba(0, 0, 0, 0.1);
+            padding: 3vw 0;
+            margin: 0;
         }
 
         @keyframes slideUp {
@@ -1239,11 +1253,15 @@
 
     <!-- Map Modal Window -->
     <div id="mapModal" class="map-modal">
+        <!-- Map Container (Top) -->
         <div class="map-container-wrapper">
             <div class="map-modal-content">
                 <div id="map" class="map-container"></div>
             </div>
-            <!-- Standard Footer -->
+        </div>
+        
+        <!-- Footer Container (Bottom) -->
+        <div class="map-footer-container">
             <nav class="bottom-nav">
                 <div class="nav-items">
                     <div class="nav-item" onclick="closeMapModal()">
