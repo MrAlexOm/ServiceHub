@@ -331,18 +331,17 @@
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
+            width: 100%;
+            height: 100%;
             background: rgba(0, 0, 0, 0.8);
             z-index: 1000;
-            animation: slideUp 0.3s ease-out;
         }
 
         .map-modal.active {
             display: block;
         }
 
-        .map-modal-content {
+        .map-container-wrapper {
             position: relative;
             width: 100%;
             height: 100%;
@@ -350,37 +349,29 @@
             flex-direction: column;
         }
 
-        .map-close-btn {
-            position: absolute;
-            bottom: 40px;
-            right: 20px;
-            background: rgba(30, 58, 138, 0.9);
-            border: none;
-            border-radius: 50%;
-            width: 60px;
-            height: 60px;
-            font-size: 5vw;
-            font-weight: 600;
-            color: white;
-            cursor: pointer;
-            z-index: 2000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-            transition: all 0.3s ease;
-        }
-
-        .map-close-btn:hover {
-            background: rgba(30, 58, 138, 1);
-            transform: scale(1.1);
-            box-shadow: 0 6px 30px rgba(0, 0, 0, 0.4);
+        .map-modal-content {
+            flex: 1;
+            position: relative;
+            width: 100%;
+            height: calc(100% - 60px);
         }
 
         .map-container {
             width: 100%;
             height: 100%;
+            border-radius: 1vw;
+            overflow: hidden;
+        }
+
+        /* Map Footer Navigation */
+        .map-modal .bottom-nav {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            z-index: 3000;
+        }
+
         }
 
         @keyframes slideUp {
@@ -1019,13 +1010,6 @@
                 object-fit: cover;
             }
 
-            .map-close-btn {
-                font-size: 5vw;
-                padding: 3vw 4vw;
-                top: 3vw;
-                right: 3vw;
-            }
-
             .profile-edit-modal {
                 width: 95%;
             }
@@ -1124,29 +1108,6 @@
                 width: 15vw;
                 height: 15vw;
                 font-size: 5vw;
-            }
-
-            .map-close-btn {
-                top: auto !important;
-                left: auto !important;
-                position: fixed !important;
-                bottom: 50px !important;
-                right: 25px !important;
-                width: 60px !important;
-                height: 60px !important;
-                font-size: 6vw !important;
-                z-index: 1000000 !important;
-                display: flex !important;
-                background: rgba(30, 58, 138, 0.9) !important;
-                border: none !important;
-                border-radius: 50% !important;
-                color: white !important;
-                cursor: pointer !important;
-                align-items: center !important;
-                justify-content: center !important;
-                gap: 0 !important;
-                transition: all 0.3s ease !important;
-                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
             }
 
             .btn-cancel {
@@ -1280,12 +1241,36 @@
 
     <!-- Map Modal Window -->
     <div id="mapModal" class="map-modal">
-        <div class="map-modal-content">
-            <div id="map" class="map-container"></div>
+        <div class="map-container-wrapper">
+            <div class="map-modal-content">
+                <div id="map" class="map-container"></div>
+            </div>
+            <!-- Standard Footer -->
+            <nav class="bottom-nav">
+                <div class="nav-items">
+                    <div class="nav-item" onclick="closeMapModal()">
+                        <i class="fas fa-home nav-icon"></i>
+                        <span class="nav-label">Домой</span>
+                    </div>
+                    <div class="nav-item" onclick="handleMapNavClick('calendar')">
+                        <i class="fas fa-calendar nav-icon"></i>
+                        <span class="nav-label">Календарь</span>
+                    </div>
+                    <div class="nav-item" onclick="handleMapNavClick('inventory')">
+                        <i class="fas fa-box nav-icon"></i>
+                        <span class="nav-label">Инвентарь</span>
+                    </div>
+                    <div class="nav-item" onclick="handleMapNavClick('docs')">
+                        <i class="fas fa-file-alt nav-icon"></i>
+                        <span class="nav-label">Документы</span>
+                    </div>
+                    <div class="nav-item" onclick="handleMapNavClick('menu')">
+                        <i class="fas fa-bars nav-icon"></i>
+                        <span class="nav-label">Меню</span>
+                    </div>
+                </div>
+            </nav>
         </div>
-        <button class="map-close-btn" onclick="closeMapModal()">
-            <i class="fas fa-times"></i>
-        </button>
     </div>
 
     <!-- Admin Profile Modals -->
@@ -1566,6 +1551,27 @@
             const modal = document.getElementById('profileEditModal');
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
+        }
+
+        // Map Navigation Handler
+        function handleMapNavClick(action) {
+            switch(action) {
+                case 'home':
+                    closeMapModal();
+                    break;
+                case 'calendar':
+                    alert('Календарь в режиме карты');
+                    break;
+                case 'inventory':
+                    alert('Инвентарь в режиме карты');
+                    break;
+                case 'docs':
+                    alert('Документы в режиме карты');
+                    break;
+                case 'menu':
+                    alert('Меню в режиме карты');
+                    break;
+            }
         }
 
         function openAdminMainModal() {
