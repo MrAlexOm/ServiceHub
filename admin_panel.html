@@ -685,7 +685,11 @@
         }
 
         .chat-container {
-            flex: 1;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
             display: flex;
             flex-direction: column;
             padding: 4vw;
@@ -695,7 +699,10 @@
         .chat-messages {
             flex: 1;
             overflow-y: auto;
+            display: flex;
+            flex-direction: column;
             margin-bottom: 4vw;
+            scroll-behavior: smooth;
         }
 
         .system-message {
@@ -790,7 +797,11 @@
         }
 
         .chat-input-container {
-            position: relative;
+            position: fixed;
+            bottom: 20vw;
+            left: 4vw;
+            right: 4vw;
+            z-index: 1002;
         }
 
         .masters-suggestions {
@@ -1071,6 +1082,17 @@
 
             .admin-edit-profile-btn i {
                 font-size: 3.5vw;
+            }
+
+            .chat-container {
+                padding: 3vw;
+                padding-bottom: 25vw;
+            }
+
+            .chat-input-container {
+                bottom: 25vw;
+                left: 3vw;
+                right: 3vw;
             }
 
             .new-order-title {
@@ -1687,14 +1709,8 @@
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
             
-            // Reset chat
-            const chatMessages = document.getElementById('chatMessages');
-            chatMessages.innerHTML = `
-                <div class="system-message">
-                    <i class="fas fa-robot"></i>
-                    <span>ИИ-ассистент готов помочь. Опишите заказ в свободной форме.</span>
-                </div>
-            `;
+            // Load chat history
+            loadChatHistory();
             
             document.getElementById('orderInput').value = '';
         }
@@ -1703,6 +1719,108 @@
             const modal = document.getElementById('newOrderModal');
             modal.classList.remove('active');
             document.body.style.overflow = 'auto';
+        }
+
+        // Chat History Functions
+        function loadChatHistory() {
+            const chatHistory = localStorage.getItem('chatHistory');
+            const chatMessages = document.getElementById('chatMessages');
+            
+            if (chatHistory) {
+                const messages = JSON.parse(chatHistory);
+                const now = Date.now();
+                const threeDaysAgo = now - (72 * 60 * 60 * 1000);
+                
+                // Filter messages older than 3 days
+                const validMessages = messages.filter(msg => msg.timestamp > threeDaysAgo);
+                
+                // Update localStorage with filtered messages
+                localStorage.setItem('chatHistory', JSON.stringify(validMessages));
+                
+                // Display messages
+                chatMessages.innerHTML = '';
+                
+                if (validMessages.length === 0) {
+                    // Show welcome message if no valid history
+                    chatMessages.innerHTML = `
+                        <div class="system-message">
+                            <i class="fas fa-robot"></i>
+                            <span>ИИ-ассистент готов помочь. Опишите заказ в свободной форме.</span>
+                        </div>
+                    `;
+                } else {
+                    // Display historical messages
+                    validMessages.forEach(msg => {
+                        displayMessage(msg.type, msg.content, false);
+                    });
+                    
+                    // Add welcome message at the end
+                    chatMessages.innerHTML += `
+                        <div class="system-message">
+                            <i class="fas fa-robot"></i>
+                            <span>ИИ-ассистент готов помочь. Опишите заказ в свободной форме.</span>
+                        </div>
+                    `;
+                }
+                
+                // Auto-scroll to bottom
+                setTimeout(() => {
+                    chatMessages.scrollTop = chatMessages.scrollHeight;
+                }, 100);
+            } else {
+                // No history, show welcome message
+                chatMessages.innerHTML = `
+                    <div class="system-message">
+                        <i class="fas fa-robot"></i>
+                        <span>ИИ-ассистент готов помочь. Опишите заказ в свободной форме.</span>
+                    </div>
+                `;
+            }
+        }
+
+        function saveMessageToHistory(type, content) {
+            const chatHistory = localStorage.getItem('chatHistory');
+            const messages = chatHistory ? JSON.parse(chatHistory) : [];
+            
+            const message = {
+                type: type,
+                content: content,
+                timestamp: Date.now()
+            };
+            
+            messages.push(message);
+            
+            // Keep only last 100 messages to prevent storage overflow
+            if (messages.length > 100) {
+                messages.splice(0, messages.length - 100);
+            }
+            
+            localStorage.setItem('chatHistory', JSON.stringify(messages));
+        }
+
+        function displayMessage(type, content, shouldSave = true) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `${type}-message`;
+            
+            if (type === 'user') {
+                messageDiv.innerHTML = `<div class="user-message-content">${content}</div>`;
+            } else if (type === 'ai') {
+                messageDiv.innerHTML = `
+                    <i class="fas fa-robot"></i>
+                    <div class="ai-message-content">${content}</div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            
+            // Auto-scroll to bottom
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            
+            // Save to history if needed
+            if (shouldSave) {
+                saveMessageToHistory(type, content);
+            }
         }
 
         function handleNewOrderNavClick(action) {
@@ -1803,11 +1921,11 @@
             if (!orderText) return;
             
             // Add user message
-            addMessage('user', orderText);
+            displayMessage('user', orderText);
             input.value = '';
             
             // Show AI processing
-            addMessage('ai', 'Обрабатываю заказ...');
+            displayMessage('ai', 'Обрабатываю заказ...');
             
             // Simulate AI processing
             setTimeout(() => {
@@ -1820,24 +1938,6 @@
                 // Show notification
                 showNotification(orderData);
             }, 1500);
-        }
-
-        function addMessage(type, content) {
-            const chatMessages = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `${type}-message`;
-            
-            if (type === 'user') {
-                messageDiv.innerHTML = `<div class="user-message-content">${content}</div>`;
-            } else if (type === 'ai') {
-                messageDiv.innerHTML = `
-                    <i class="fas fa-robot"></i>
-                    <div class="ai-message-content">${content}</div>
-                `;
-            }
-            
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
         function processOrderWithAI(orderText) {
