@@ -1454,7 +1454,7 @@
                             </button>
                         </div>
                         <div class="api-key-buttons">
-                            <button class="api-key-btn save-btn" onclick="saveApiKey()">
+                            <button class="api-key-btn save-btn" onclick="saveApiKey(event)">
                                 <i class="fas fa-save"></i>
                                 Сохранить ключ
                             </button>
@@ -1609,6 +1609,23 @@
 
     <script src="config.js"></script>
     <script>
+        // Initialize API Key Priority
+        (function initializeApiKey() {
+            const userKey = localStorage.getItem('user_gemini_key');
+            console.log('Key loaded from localStorage:', !!userKey);
+            
+            if (userKey) {
+                // Priority: user key from localStorage
+                if (typeof API_KEY !== 'undefined') {
+                    API_KEY = userKey;
+                }
+                console.log('Using user key from localStorage');
+            } else {
+                // Fallback: config.js or empty
+                console.log('No user key found, using config.js fallback');
+            }
+        })();
+
         // Navigation handlers
         function handleTileClick(tile) {
             console.log('Tile clicked:', tile);
@@ -1733,10 +1750,13 @@
             }
         }
 
-        function saveApiKey() {
+        function saveApiKey(event) {
+            event.preventDefault();
+            
             const input = document.getElementById('geminiApiKey');
             const key = input.value.trim();
             const statusDiv = document.getElementById('apiKeyStatus');
+            const saveBtn = document.querySelector('.api-key-btn.save-btn');
             
             if (!key) {
                 showApiKeyStatus('error', 'Пожалуйста, введите API ключ');
@@ -1751,13 +1771,23 @@
                 API_KEY = key;
             }
             
+            // Show success and change button text
             showApiKeyStatus('success', 'API ключ успешно сохранен!');
+            const originalText = saveBtn.innerHTML;
+            saveBtn.innerHTML = '<i class="fas fa-check"></i> ✅ Сохранено!';
+            saveBtn.disabled = true;
             
-            // Clear input after successful save
+            // Keep the key visible (masked) in input
+            input.value = key;
+            input.type = 'password';
+            document.getElementById('passwordToggleIcon').className = 'fas fa-eye';
+            
+            // Restore button after 2 seconds
             setTimeout(() => {
-                input.value = '';
+                saveBtn.innerHTML = originalText;
+                saveBtn.disabled = false;
                 statusDiv.style.display = 'none';
-            }, 3000);
+            }, 2000);
         }
 
         function deleteApiKey() {
@@ -1793,8 +1823,10 @@
             const input = document.getElementById('geminiApiKey');
             
             if (savedKey) {
-                // Show that key exists but don't display it
-                input.placeholder = 'API ключ уже сохранен';
+                // Show masked key in input
+                input.value = savedKey;
+                input.type = 'password';
+                document.getElementById('passwordToggleIcon').className = 'fas fa-eye';
                 showApiKeyStatus('info', 'Сохраненный API ключ будет использован');
                 
                 // Update global API_KEY
@@ -1802,9 +1834,13 @@
                     API_KEY = savedKey;
                 }
                 
+                console.log('Key loaded from localStorage:', !!savedKey);
+                
                 setTimeout(() => {
                     document.getElementById('apiKeyStatus').style.display = 'none';
                 }, 3000);
+            } else {
+                console.log('No saved key found in localStorage');
             }
         }
 
@@ -2230,10 +2266,19 @@
         }
 
         function processOrderWithAI(orderText) {
+            // Dynamic API key check - reload from localStorage before each request
+            const userKey = localStorage.getItem('user_gemini_key');
+            console.log('ProcessOrderWithAI - Key loaded from localStorage:', !!userKey);
+            
+            // Update API_KEY with fresh value from localStorage
+            if (userKey && typeof API_KEY !== 'undefined') {
+                API_KEY = userKey;
+            }
+            
             // Check if API key is available
-            if (typeof API_KEY === 'undefined' || !API_KEY) {
+            if (typeof API_KEY === 'undefined' || !API_KEY || API_KEY === 'PLACEHOLDER_API_KEY') {
                 // API key not found - show warning and fallback
-                displayMessage('ai', '⚠️ API ключ не найден в config.js');
+                displayMessage('ai', '⚠️ API ключ не найден. Пожалуйста, сохраните ключ в личном кабинете.');
                 return simulateOrderProcessing(orderText);
             }
             
