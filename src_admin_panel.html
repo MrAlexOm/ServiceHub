@@ -2399,41 +2399,32 @@
             };
         }
 
-        async function callGeminiAPI(orderText, apiKey) {
-            const geminiApiKey = process.env.NEXT_PUBLIC_GEMINI_API_KEY;
-            
-            if (geminiApiKey === undefined) {
-                console.error('Error: NEXT_PUBLIC_GEMINI_API_KEY is undefined');
-                throw new Error('API key is not configured');
-            }
-            
-            const systemInstruction = "Ты — диспетчер клининга 'CleanTeam' в Анталье. Твоя цель — превратить сообщение админа в JSON. Если данных не хватает, спроси уточнение. Если данные есть, верни JSON с полями: date, time, client_name, phone, address (district, street, building, apartment), service_type, rooms, extra_services, equipment, staff (array), total_price, admin_profit (30%), staff_salary. Приоритетный регион — Турция (Анталья, Хурма, Лара, Коньялты).";
-            
-            const prompt = `${systemInstruction}\n\nЗаказ: ${orderText}`;
-            const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${geminiApiKey}`;
+        async function callGeminiAPI(prompt) {
+    // ВСТАВЛЯЙ СВОЙ КЛЮЧ В КАВЫЧКИ НИЖЕ:
+    const apiKey = "AIzaSyAVnw9Qes5S6eQKvn2mF94pXZ4WsLPHDkg"; 
+    
+    const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${apiKey}`;
 
-            const response = await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    contents: [{ parts: [{ text: prompt }] }],
-                    generationConfig: { temperature: 0.7, maxOutputTokens: 2048 }
-                })
-            });
+    const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+            contents: [{
+                parts: [{ text: prompt }]
+            }]
+        })
+    });
 
-            if (!response.ok) {
-                const errorText = await response.text();
-                throw new Error(`Gemini API error: ${response.status} - ${errorText}`);
-            }
+    if (!response.ok) {
+        const errorData = await response.json();
+        console.error("Детали ошибки:", errorData);
+        throw new Error(`Ошибка API: ${response.status}`);
+    }
 
-            const data = await response.json();
-            const aiResponse = data.candidates?.[0]?.content?.parts?.[0]?.text;
-
-            if (!aiResponse) {
-                throw new Error('Invalid response from Gemini');
-            }
-
-            return aiResponse;
+    const data = await response.json();
+    return data.candidates[0].content.parts[0].text;
         }
 
         function displayOrderCard(orderData) {
