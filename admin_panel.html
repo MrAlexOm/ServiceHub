@@ -629,6 +629,244 @@
             box-shadow: 0 1.5vw 3vw rgba(59, 130, 246, 0.3);
         }
 
+        /* New Order Modal Styles */
+        .new-order-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #F8FAFC;
+            z-index: 1000;
+        }
+
+        .new-order-modal.active {
+            display: block;
+        }
+
+        .new-order-content {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .new-order-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 4vw;
+            background: white;
+            box-shadow: 0 2vw 4vw rgba(0, 0, 0, 0.1);
+        }
+
+        .new-order-title {
+            font-size: 5vw;
+            font-weight: 700;
+            color: #1E3A8A;
+        }
+
+        .new-order-close-btn {
+            background: none;
+            border: none;
+            font-size: 5vw;
+            color: #64748B;
+            cursor: pointer;
+            padding: 1vw;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .new-order-close-btn:hover {
+            background: #F1F5F9;
+            color: #1E3A8A;
+        }
+
+        .chat-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 4vw;
+            padding-bottom: 20vw;
+        }
+
+        .chat-messages {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 4vw;
+        }
+
+        .system-message {
+            display: flex;
+            align-items: center;
+            gap: 2vw;
+            padding: 3vw;
+            background: #EFF6FF;
+            border-radius: 2vw;
+            margin-bottom: 3vw;
+            color: #1E40AF;
+            font-size: 3.5vw;
+        }
+
+        .system-message i {
+            font-size: 4vw;
+        }
+
+        .user-message {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 3vw;
+        }
+
+        .user-message-content {
+            background: #3B82F6;
+            color: white;
+            padding: 3vw;
+            border-radius: 2vw;
+            max-width: 80%;
+            font-size: 3.5vw;
+        }
+
+        .ai-message {
+            display: flex;
+            align-items: flex-start;
+            gap: 2vw;
+            margin-bottom: 3vw;
+        }
+
+        .ai-message i {
+            font-size: 4vw;
+            color: #10B981;
+            margin-top: 1vw;
+        }
+
+        .ai-message-content {
+            flex: 1;
+            padding: 3vw;
+            background: #F0FDF4;
+            border-radius: 2vw;
+            font-size: 3.5vw;
+        }
+
+        .order-card {
+            background: white;
+            border-radius: 2vw;
+            padding: 4vw;
+            margin-top: 3vw;
+            box-shadow: 0 2vw 4vw rgba(0, 0, 0, 0.1);
+        }
+
+        .order-card-section {
+            margin-bottom: 3vw;
+        }
+
+        .order-card-section:last-child {
+            margin-bottom: 0;
+        }
+
+        .order-card-title {
+            font-weight: 700;
+            color: #1E3A8A;
+            margin-bottom: 2vw;
+            font-size: 4vw;
+        }
+
+        .order-card-item {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1.5vw;
+            font-size: 3.5vw;
+        }
+
+        .order-card-item strong {
+            color: #1E293B;
+        }
+
+        .order-card-value {
+            color: #64748B;
+            text-align: right;
+        }
+
+        .chat-input-container {
+            position: relative;
+        }
+
+        .masters-suggestions {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            right: 0;
+            background: white;
+            border-radius: 2vw;
+            box-shadow: 0 4vw 8vw rgba(0, 0, 0, 0.15);
+            max-height: 40vw;
+            overflow-y: auto;
+            margin-bottom: 2vw;
+            z-index: 1001;
+        }
+
+        .master-suggestion-item {
+            padding: 3vw;
+            border-bottom: 1px solid #F1F5F9;
+            cursor: pointer;
+            font-size: 3.5vw;
+            transition: background 0.3s ease;
+        }
+
+        .master-suggestion-item:hover {
+            background: #F8FAFC;
+        }
+
+        .master-suggestion-item:last-child {
+            border-bottom: none;
+        }
+
+        .chat-input-wrapper {
+            display: flex;
+            gap: 2vw;
+            align-items: flex-end;
+        }
+
+        .chat-input {
+            flex: 1;
+            min-height: 12vw;
+            max-height: 30vw;
+            padding: 3vw;
+            border: 2px solid #E2E8F0;
+            border-radius: 2vw;
+            font-size: 3.5vw;
+            resize: none;
+            background: white;
+            transition: border-color 0.3s ease;
+        }
+
+        .chat-input:focus {
+            outline: none;
+            border-color: #3B82F6;
+        }
+
+        .send-btn {
+            background: #3B82F6;
+            border: none;
+            border-radius: 50%;
+            width: 12vw;
+            height: 12vw;
+            color: white;
+            font-size: 4vw;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .send-btn:hover {
+            background: #2563EB;
+            transform: scale(1.1);
+        }
+
         .profile-close-section {
             text-align: center;
             margin-top: 3vw;
@@ -833,6 +1071,37 @@
 
             .admin-edit-profile-btn i {
                 font-size: 3.5vw;
+            }
+
+            .new-order-title {
+                font-size: 6vw;
+            }
+
+            .new-order-close-btn {
+                font-size: 6vw;
+            }
+
+            .system-message, .user-message-content, .ai-message-content {
+                font-size: 4vw;
+            }
+
+            .order-card-title {
+                font-size: 4.5vw;
+            }
+
+            .order-card-item {
+                font-size: 4vw;
+            }
+
+            .chat-input {
+                font-size: 4vw;
+                min-height: 15vw;
+            }
+
+            .send-btn {
+                width: 15vw;
+                height: 15vw;
+                font-size: 5vw;
             }
 
             .map-close-btn {
@@ -1084,6 +1353,71 @@
         </div>
     </div>
 
+    <!-- New Order Modal (Fullscreen) -->
+    <div id="newOrderModal" class="new-order-modal">
+        <div class="new-order-content">
+            <div class="new-order-header">
+                <h2 class="new-order-title">Новый заказ</h2>
+                <button class="new-order-close-btn" onclick="closeNewOrderModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="system-message">
+                        <i class="fas fa-robot"></i>
+                        <span>ИИ-ассистент готов помочь. Опишите заказ в свободной форме.</span>
+                    </div>
+                </div>
+                
+                <div class="chat-input-container">
+                    <div class="masters-suggestions" id="mastersSuggestions" style="display: none;">
+                        <!-- Masters list will be populated here -->
+                    </div>
+                    <div class="chat-input-wrapper">
+                        <textarea 
+                            id="orderInput" 
+                            class="chat-input" 
+                            placeholder="Введите детали заказа... Используйте @ для выбора мастера"
+                            onkeyup="handleOrderInput(event)"
+                            onclick="handleOrderInput(event)"
+                        ></textarea>
+                        <button class="send-btn" onclick="sendOrder()">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Bottom Navigation -->
+            <nav class="bottom-nav">
+                <div class="nav-items">
+                    <div class="nav-item" onclick="handleNewOrderNavClick('home')">
+                        <i class="fas fa-home nav-icon"></i>
+                        <span class="nav-label">Домой</span>
+                    </div>
+                    <div class="nav-item" onclick="handleNewOrderNavClick('calendar')">
+                        <i class="fas fa-calendar nav-icon"></i>
+                        <span class="nav-label">Календарь</span>
+                    </div>
+                    <div class="nav-item" onclick="handleNewOrderNavClick('inventory')">
+                        <i class="fas fa-box nav-icon"></i>
+                        <span class="nav-label">Инвентарь</span>
+                    </div>
+                    <div class="nav-item" onclick="handleNewOrderNavClick('docs')">
+                        <i class="fas fa-file-alt nav-icon"></i>
+                        <span class="nav-label">Документы</span>
+                    </div>
+                    <div class="nav-item" onclick="handleNewOrderNavClick('menu')">
+                        <i class="fas fa-bars nav-icon"></i>
+                        <span class="nav-label">Меню</span>
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </div>
+
     <script>
         // Navigation handlers
         function handleTileClick(tile) {
@@ -1108,7 +1442,7 @@
                     alert('Переход на инвентарь');
                     break;
                 case 'new_order':
-                    alert('Создание нового заказа с ИИ-помощником');
+                    openNewOrderModal();
                     break;
             }
         }
@@ -1346,6 +1680,358 @@
                     break;
             }
         }
+
+        // New Order Modal Functions
+        function openNewOrderModal() {
+            const modal = document.getElementById('newOrderModal');
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            
+            // Reset chat
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = `
+                <div class="system-message">
+                    <i class="fas fa-robot"></i>
+                    <span>ИИ-ассистент готов помочь. Опишите заказ в свободной форме.</span>
+                </div>
+            `;
+            
+            document.getElementById('orderInput').value = '';
+        }
+
+        function closeNewOrderModal() {
+            const modal = document.getElementById('newOrderModal');
+            modal.classList.remove('active');
+            document.body.style.overflow = 'auto';
+        }
+
+        function handleNewOrderNavClick(action) {
+            switch(action) {
+                case 'home':
+                    closeNewOrderModal();
+                    break;
+                case 'calendar':
+                    alert('Календарь в режиме нового заказа');
+                    break;
+                case 'inventory':
+                    alert('Инвентарь в режиме нового заказа');
+                    break;
+                case 'docs':
+                    alert('Документы в режиме нового заказа');
+                    break;
+                case 'menu':
+                    alert('Меню в режиме нового заказа');
+                    break;
+            }
+        }
+
+        // Masters data (from localStorage)
+        function getMasters() {
+            const masters = localStorage.getItem('masters');
+            return masters ? JSON.parse(masters) : [
+                { id: 1, name: 'Иван Петров', specialty: 'Клининг' },
+                { id: 2, name: 'Мария Сидорова', specialty: 'Уборка' },
+                { id: 3, name: 'Алексей Иванов', specialty: 'Ремонт' },
+                { id: 4, name: 'Елена Козлова', specialty: 'Химчистка' },
+                { id: 5, name: 'Дмитрий Смирнов', specialty: 'Генеральная уборка' }
+            ];
+        }
+
+        // Handle @ symbol for masters selection
+        function handleOrderInput(event) {
+            const input = event.target;
+            const value = input.value;
+            const cursorPos = input.selectionStart;
+            
+            // Check for @ symbol
+            const atSymbolIndex = value.lastIndexOf('@', cursorPos);
+            
+            if (atSymbolIndex !== -1) {
+                const afterAt = value.substring(atSymbolIndex + 1, cursorPos);
+                const masters = getMasters();
+                
+                // Filter masters
+                const filteredMasters = masters.filter(master => 
+                    master.name.toLowerCase().includes(afterAt.toLowerCase())
+                );
+                
+                if (filteredMasters.length > 0) {
+                    showMastersSuggestions(filteredMasters, atSymbolIndex, cursorPos);
+                } else {
+                    hideMastersSuggestions();
+                }
+            } else {
+                hideMastersSuggestions();
+            }
+        }
+
+        function showMastersSuggestions(masters, startIndex, endIndex) {
+            const suggestionsDiv = document.getElementById('mastersSuggestions');
+            suggestionsDiv.innerHTML = masters.map(master => `
+                <div class="master-suggestion-item" onclick="selectMaster('${master.name}', ${startIndex}, ${endIndex})">
+                    <strong>${master.name}</strong> - ${master.specialty}
+                </div>
+            `).join('');
+            suggestionsDiv.style.display = 'block';
+        }
+
+        function hideMastersSuggestions() {
+            document.getElementById('mastersSuggestions').style.display = 'none';
+        }
+
+        function selectMaster(masterName, startIndex, endIndex) {
+            const input = document.getElementById('orderInput');
+            const value = input.value;
+            
+            // Replace @... with master name
+            const newValue = value.substring(0, startIndex) + masterName + value.substring(endIndex);
+            input.value = newValue;
+            
+            // Set cursor position after master name
+            const newCursorPos = startIndex + masterName.length;
+            input.setSelectionRange(newCursorPos, newCursorPos);
+            input.focus();
+            
+            hideMastersSuggestions();
+        }
+
+        // Send order and process with AI
+        function sendOrder() {
+            const input = document.getElementById('orderInput');
+            const orderText = input.value.trim();
+            
+            if (!orderText) return;
+            
+            // Add user message
+            addMessage('user', orderText);
+            input.value = '';
+            
+            // Show AI processing
+            addMessage('ai', 'Обрабатываю заказ...');
+            
+            // Simulate AI processing
+            setTimeout(() => {
+                const orderData = processOrderWithAI(orderText);
+                displayOrderCard(orderData);
+                
+                // Update counters
+                updateOrderCounters(orderData);
+                
+                // Show notification
+                showNotification(orderData);
+            }, 1500);
+        }
+
+        function addMessage(type, content) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `${type}-message`;
+            
+            if (type === 'user') {
+                messageDiv.innerHTML = `<div class="user-message-content">${content}</div>`;
+            } else if (type === 'ai') {
+                messageDiv.innerHTML = `
+                    <i class="fas fa-robot"></i>
+                    <div class="ai-message-content">${content}</div>
+                `;
+            }
+            
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function processOrderWithAI(orderText) {
+            // Simulate AI processing
+            const masters = getMasters();
+            const selectedMasters = [];
+            
+            // Extract masters mentioned with @
+            masters.forEach(master => {
+                if (orderText.includes(master.name)) {
+                    selectedMasters.push(master.name);
+                }
+            });
+            
+            // Simulate structured order data
+            return {
+                client: {
+                    name: 'Анна Петрова',
+                    phone: '+7 900 123-45-67',
+                    whatsapp: '+7 900 123-45-67'
+                },
+                address: {
+                    city: 'Москва',
+                    district: 'Центральный',
+                    street: 'Тверская улица',
+                    house: '15',
+                    apartment: '42',
+                    floor: '4'
+                },
+                details: {
+                    type: 'Генеральная уборка',
+                    rooms: '3 комнаты',
+                    services: 'Химчистка мебели, мытье окон',
+                    equipment: 'Пылесос, моющие средства'
+                },
+                masters: selectedMasters.length > 0 ? selectedMasters : ['Иван Петров'],
+                finance: {
+                    total: 15000,
+                    extra: 2000,
+                    adminShare: 4500,
+                    mastersSalary: 10500
+                },
+                date: new Date().toLocaleDateString('ru-RU'),
+                isToday: true
+            };
+        }
+
+        function displayOrderCard(orderData) {
+            const chatMessages = document.getElementById('chatMessages');
+            const aiMessage = document.createElement('div');
+            aiMessage.className = 'ai-message';
+            
+            aiMessage.innerHTML = `
+                <i class="fas fa-robot"></i>
+                <div class="ai-message-content">
+                    <div>Заказ успешно сформирован!</div>
+                    <div class="order-card">
+                        <div class="order-card-section">
+                            <div class="order-card-title">👤 Клиент</div>
+                            <div class="order-card-item">
+                                <strong>Имя:</strong>
+                                <span class="order-card-value">${orderData.client.name}</span>
+                            </div>
+                            <div class="order-card-item">
+                                <strong>Телефон:</strong>
+                                <span class="order-card-value">${orderData.client.phone}</span>
+                            </div>
+                            <div class="order-card-item">
+                                <strong>WhatsApp:</strong>
+                                <span class="order-card-value">${orderData.client.whatsapp}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="order-card-section">
+                            <div class="order-card-title">📍 Адрес</div>
+                            <div class="order-card-item">
+                                <strong>Город:</strong>
+                                <span class="order-card-value">${orderData.address.city}</span>
+                            </div>
+                            <div class="order-card-item">
+                                <strong>Район:</strong>
+                                <span class="order-card-value">${orderData.address.district}</span>
+                            </div>
+                            <div class="order-card-item">
+                                <strong>Адрес:</strong>
+                                <span class="order-card-value">${orderData.address.street}, ${orderData.address.house}</span>
+                            </div>
+                            <div class="order-card-item">
+                                <strong>Кв/Этаж:</strong>
+                                <span class="order-card-value">${orderData.address.apartment}/${orderData.address.floor}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="order-card-section">
+                            <div class="order-card-title">🔧 Детали</div>
+                            <div class="order-card-item">
+                                <strong>Тип:</strong>
+                                <span class="order-card-value">${orderData.details.type}</span>
+                            </div>
+                            <div class="order-card-item">
+                                <strong>Помещения:</strong>
+                                <span class="order-card-value">${orderData.details.rooms}</span>
+                            </div>
+                            <div class="order-card-item">
+                                <strong>Услуги:</strong>
+                                <span class="order-card-value">${orderData.details.services}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="order-card-section">
+                            <div class="order-card-title">👥 Мастера</div>
+                            <div class="order-card-item">
+                                <strong>Исполнители:</strong>
+                                <span class="order-card-value">${orderData.masters.join(', ')}</span>
+                            </div>
+                        </div>
+                        
+                        <div class="order-card-section">
+                            <div class="order-card-title">💰 Финансы</div>
+                            <div class="order-card-item">
+                                <strong>Общая сумма:</strong>
+                                <span class="order-card-value">${orderData.finance.total} ₽</span>
+                            </div>
+                            <div class="order-card-item">
+                                <strong>Доплата:</strong>
+                                <span class="order-card-value">${orderData.finance.extra} ₽</span>
+                            </div>
+                            <div class="order-card-item">
+                                <strong>Доля админа (30%):</strong>
+                                <span class="order-card-value">${orderData.finance.adminShare} ₽</span>
+                            </div>
+                            <div class="order-card-item">
+                                <strong>ЗП мастеров:</strong>
+                                <span class="order-card-value">${orderData.finance.mastersSalary} ₽</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            chatMessages.appendChild(aiMessage);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function updateOrderCounters(orderData) {
+            if (orderData.isToday) {
+                const todayCounter = document.querySelector('.stat-today');
+                if (todayCounter) {
+                    const currentValue = parseInt(todayCounter.textContent);
+                    todayCounter.textContent = currentValue + 1;
+                }
+            }
+        }
+
+        function showNotification(orderData) {
+            // Create notification element
+            const notification = document.createElement('div');
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #10B981;
+                color: white;
+                padding: 15px 20px;
+                border-radius: 10px;
+                box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+                z-index: 10000;
+                font-size: 14px;
+                max-width: 300px;
+            `;
+            notification.innerHTML = `
+                <div style="display: flex; align-items: center; gap: 10px;">
+                    <i class="fas fa-check-circle"></i>
+                    <span>Заказ сформирован. Мастера ${orderData.masters.join(', ')} уведомлены</span>
+                </div>
+            `;
+            
+            document.body.appendChild(notification);
+            
+            // Remove after 5 seconds
+            setTimeout(() => {
+                notification.remove();
+            }, 5000);
+        }
+
+        // Close suggestions when clicking outside
+        document.addEventListener('click', function(event) {
+            const suggestionsDiv = document.getElementById('mastersSuggestions');
+            const input = document.getElementById('orderInput');
+            
+            if (!suggestionsDiv.contains(event.target) && event.target !== input) {
+                hideMastersSuggestions();
+            }
+        });
     </script>
 </body>
 </html>
