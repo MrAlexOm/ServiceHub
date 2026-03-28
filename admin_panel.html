@@ -596,6 +596,137 @@
             box-shadow: 0 0 0 0.3vw rgba(59, 130, 246, 0.1);
         }
 
+        /* API Key Section Styles */
+        .api-key-section {
+            margin-top: 4vw;
+            padding: 3vw;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 2vw;
+            box-shadow: 0 1.5vw 3vw rgba(0, 0, 0, 0.1);
+        }
+
+        .api-key-title {
+            font-size: 4vw;
+            font-weight: 600;
+            color: #1E3A8A;
+            margin-bottom: 3vw;
+            text-align: center;
+        }
+
+        .api-key-input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 2vw;
+        }
+
+        .password-input-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .api-key-input {
+            flex: 1;
+            padding: 2.5vw;
+            font-size: 3vw;
+            border: 0.3vw solid #E5E7EB;
+            border-radius: 1.5vw;
+            background: #F9FAFB;
+            transition: all 0.3s ease;
+            padding-right: 8vw;
+        }
+
+        .api-key-input:focus {
+            outline: none;
+            border-color: #3B82F6;
+            background: white;
+            box-shadow: 0 0 0 0.3vw rgba(59, 130, 246, 0.1);
+        }
+
+        .password-toggle-btn {
+            position: absolute;
+            right: 2vw;
+            background: none;
+            border: none;
+            color: #6B7280;
+            cursor: pointer;
+            padding: 1vw;
+            border-radius: 1vw;
+            transition: all 0.3s ease;
+        }
+
+        .password-toggle-btn:hover {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3B82F6;
+        }
+
+        .api-key-buttons {
+            display: flex;
+            gap: 2vw;
+            justify-content: center;
+        }
+
+        .api-key-btn {
+            display: flex;
+            align-items: center;
+            gap: 1vw;
+            padding: 2vw 3vw;
+            border: none;
+            border-radius: 1.5vw;
+            font-size: 3vw;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .api-key-btn.save-btn {
+            background: #3B82F6;
+            color: white;
+        }
+
+        .api-key-btn.save-btn:hover {
+            background: #2563EB;
+            transform: translateY(-0.5vw);
+        }
+
+        .api-key-btn.delete-btn {
+            background: #EF4444;
+            color: white;
+        }
+
+        .api-key-btn.delete-btn:hover {
+            background: #DC2626;
+            transform: translateY(-0.5vw);
+        }
+
+        .api-key-status {
+            margin-top: 2vw;
+            padding: 2vw;
+            border-radius: 1.5vw;
+            text-align: center;
+            font-size: 2.5vw;
+            font-weight: 500;
+            display: none;
+        }
+
+        .api-key-status.success {
+            background: rgba(16, 185, 129, 0.1);
+            color: #10B981;
+            border: 0.2vw solid #10B981;
+        }
+
+        .api-key-status.error {
+            background: rgba(239, 68, 68, 0.1);
+            color: #EF4444;
+            border: 0.2vw solid #EF4444;
+        }
+
+        .api-key-status.info {
+            background: rgba(59, 130, 246, 0.1);
+            color: #3B82F6;
+            border: 0.2vw solid #3B82F6;
+        }
+
         .profile-buttons {
             display: flex;
             gap: 2vw;
@@ -1311,7 +1442,30 @@
                     <i class="fas fa-user-edit"></i>
                     Редактировать профиль
                 </button>
-                <!-- Content will be added in next step -->
+                
+                <!-- Gemini API Key Section -->
+                <div class="api-key-section">
+                    <h3 class="api-key-title">Gemini API Key</h3>
+                    <div class="api-key-input-group">
+                        <div class="password-input-wrapper">
+                            <input type="password" id="geminiApiKey" placeholder="Введите ваш Gemini API Key" class="api-key-input">
+                            <button type="button" class="password-toggle-btn" onclick="togglePasswordVisibility()">
+                                <i class="fas fa-eye" id="passwordToggleIcon"></i>
+                            </button>
+                        </div>
+                        <div class="api-key-buttons">
+                            <button class="api-key-btn save-btn" onclick="saveApiKey()">
+                                <i class="fas fa-save"></i>
+                                Сохранить ключ
+                            </button>
+                            <button class="api-key-btn delete-btn" onclick="deleteApiKey()">
+                                <i class="fas fa-trash"></i>
+                                Удалить ключ
+                            </button>
+                        </div>
+                    </div>
+                    <div class="api-key-status" id="apiKeyStatus"></div>
+                </div>
             </div>
             
             <!-- Bottom Navigation for Admin Cabinet -->
@@ -1565,6 +1719,95 @@
             document.body.style.overflow = 'auto';
         }
 
+        // API Key Functions
+        function togglePasswordVisibility() {
+            const input = document.getElementById('geminiApiKey');
+            const icon = document.getElementById('passwordToggleIcon');
+            
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.className = 'fas fa-eye-slash';
+            } else {
+                input.type = 'password';
+                icon.className = 'fas fa-eye';
+            }
+        }
+
+        function saveApiKey() {
+            const input = document.getElementById('geminiApiKey');
+            const key = input.value.trim();
+            const statusDiv = document.getElementById('apiKeyStatus');
+            
+            if (!key) {
+                showApiKeyStatus('error', 'Пожалуйста, введите API ключ');
+                return;
+            }
+            
+            // Save to localStorage
+            localStorage.setItem('user_gemini_key', key);
+            
+            // Update global API_KEY
+            if (typeof API_KEY !== 'undefined') {
+                API_KEY = key;
+            }
+            
+            showApiKeyStatus('success', 'API ключ успешно сохранен!');
+            
+            // Clear input after successful save
+            setTimeout(() => {
+                input.value = '';
+                statusDiv.style.display = 'none';
+            }, 3000);
+        }
+
+        function deleteApiKey() {
+            if (confirm('Вы уверены, что хотите удалить API ключ?')) {
+                localStorage.removeItem('user_gemini_key');
+                
+                // Reset to config.js value
+                if (typeof API_KEY !== 'undefined') {
+                    // Reset to placeholder or empty
+                    API_KEY = 'PLACEHOLDER_API_KEY' || localStorage.getItem('gemini_api_key') || '';
+                }
+                
+                showApiKeyStatus('info', 'API ключ удален');
+                
+                // Clear input
+                document.getElementById('geminiApiKey').value = '';
+                
+                setTimeout(() => {
+                    document.getElementById('apiKeyStatus').style.display = 'none';
+                }, 3000);
+            }
+        }
+
+        function showApiKeyStatus(type, message) {
+            const statusDiv = document.getElementById('apiKeyStatus');
+            statusDiv.className = `api-key-status ${type}`;
+            statusDiv.textContent = message;
+            statusDiv.style.display = 'block';
+        }
+
+        function loadApiKey() {
+            const savedKey = localStorage.getItem('user_gemini_key');
+            const input = document.getElementById('geminiApiKey');
+            
+            if (savedKey) {
+                // Show that key exists but don't display it
+                input.placeholder = 'API ключ уже сохранен';
+                showApiKeyStatus('info', 'Сохраненный API ключ будет использован');
+                
+                // Update global API_KEY
+                if (typeof API_KEY !== 'undefined') {
+                    API_KEY = savedKey;
+                }
+                
+                setTimeout(() => {
+                    document.getElementById('apiKeyStatus').style.display = 'none';
+                }, 3000);
+            }
+        }
+
         // Admin Profile Functions
         function openProfileEditModal() {
             const modal = document.getElementById('profileEditModal');
@@ -1606,6 +1849,9 @@
             const modal = document.getElementById('adminMainModal');
             modal.classList.add('active');
             document.body.style.overflow = 'hidden';
+            
+            // Load saved API key
+            loadApiKey();
         }
 
         function closeAdminMainModal() {
