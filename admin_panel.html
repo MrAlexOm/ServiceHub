@@ -663,6 +663,9 @@
             padding: 4vw;
             background: white;
             box-shadow: 0 2vw 4vw rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+            flex-shrink: 0;
         }
 
         .new-order-title {
@@ -688,15 +691,12 @@
         }
 
         .chat-container {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            flex: 1;
             display: flex;
             flex-direction: column;
-            padding: 4vw;
-            padding-bottom: 20vw;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
         }
 
         .chat-messages {
@@ -704,8 +704,11 @@
             overflow-y: auto;
             display: flex;
             flex-direction: column;
-            margin-bottom: 4vw;
+            padding: 4vw;
+            padding-bottom: 20px;
             scroll-behavior: smooth;
+            position: relative;
+            z-index: 1;
         }
 
         .system-message {
@@ -1081,8 +1084,17 @@
             }
 
             .chat-container {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                position: relative;
+                z-index: 1;
+                overflow: hidden;
+            }
+
+            .chat-messages {
                 padding: 3vw;
-                padding-bottom: 25vw;
+                padding-bottom: 20px;
             }
 
             .chat-input-container {
