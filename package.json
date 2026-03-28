@@ -2,6 +2,6 @@
   "name": "servicehub",
   "version": "1.0.0",
   "scripts": {
-    "build": "powershell -Command \"(Get-Content admin_panel.html) -replace 'PLACEHOLDER_API_KEY', $env:GEMINI_API_KEY | Set-Content admin_panel.html\""
+    "build": "sed -i \"s/PLACEHOLDER_API_KEY/$GEMINI_API_KEY/g\" admin_panel.html"
   }
 }
